@@ -7,4 +7,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ProjecteProva2LlibreriaEx2\ProjecteProva2LlibreriaEx2.csproj" />
+  </ItemGroup>
+
 </Project>
