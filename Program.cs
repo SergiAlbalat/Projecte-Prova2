@@ -1,77 +1,86 @@
 ﻿using System;
 namespace ProvaT2
 {
-    //PRE: rep 3 números
-    public class validate_num
+    //Precon: L'usuari introdueix 20 valors
+    //Postcon: L'usuari rep els valors ordenats i pot buscar un valor especific
+    public class Program
     {
-        public static bool InRange(int num, int min, int max)
+        public static void Swap(ref int firstNum, ref int secondNum)
         {
-            return num >= min && num <= max;
+            int aux = firstNum;
+            firstNum = secondNum;
+            secondNum = aux;
         }
-
-        public static bool MesLlarg(int mes)
+        public static int[] BubbleSort(int[] array)
         {
-            return mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 || mes == 10 || mes == 12;
-        }
-
-        public static bool Bisiesto(int any)
-        {
-            return (any % 400 == 0) || ((any % 4 == 0) && (any % 100 != 0));
-        }
-
-        public static void Main()
-        {
-            const string Msg1 = "Introdueix el dia, mes i any";
-            const string Msg2 = "El dia no esta dins del rang";
-            const string Msg3 = "El mes no esta dins del rang";
-            const string Msg4 = "La data es correcta";
-            const string FormatError = "El format de la dada es incorrecte";
-            int dia, mes, any;
-            bool validat = true;
-
-            Console.WriteLine(Msg1);
-            try
+            for(int i = 0; i < array.Length - 1; i++)
             {
-                dia = int.Parse(Console.ReadLine());
-                mes = int.Parse(Console.ReadLine());
-                any = int.Parse(Console.ReadLine());
-                if (InRange(mes, 1, 12))
+                for (int j = i+1; j < array.Length; j++)
                 {
-                    if (MesLlarg(mes) && !InRange(dia, 1, 31))
+                    if (array[j] < array[i])
                     {
-                        Console.WriteLine(Msg2);
-                        validat = false;
+                        Swap(ref array[i], ref array[j]);
                     }
-                    else if (mes == 2 && !InRange(dia, 1, 28) && !Bisiesto(any))
-                    {
-                        Console.WriteLine(Msg2);
-                        validat = false;
-                    }
-                    else if (mes == 2 && !InRange(dia, 1, 29) && Bisiesto(any))
-                    {
-                        Console.WriteLine(Msg2);
-                        validat = false;
-                    }
-                    else if (!InRange(dia, 1, 30))
-                    {
-                        Console.WriteLine(Msg2);
-                        validat = false;
-                    }
+                }
+            }
+            return array;
+        }
+        public static void WriteArray(int[] array)
+        {
+            for(int i = 0; i < array.Length; i++)
+            {
+                Console.Write("{0} ",array[i]);
+            }
+            Console.WriteLine();
+        }
+        public static bool BinarySearch(int[] arr, int first, int last, int key)
+        {
+            if (last >= first)
+            {
+                int mid = first + (last - first) / 2;
+                if (arr[mid] == key)
+                {
+                    return true;
+                }
+                if (arr[mid] > key)
+                {
+                    return BinarySearch(arr, first, mid - 1, key);
                 }
                 else
                 {
-                    Console.WriteLine(Msg3);
-                    validat = false;
-                }
-                if (validat)
-                {
-                    Console.WriteLine(Msg4);
+                    return BinarySearch(arr, mid + 1, last, key);
                 }
             }
-            catch (FormatException)
+            return false;
+        }
+        public static void Main()
+        {
+            const string Msg1 = "Write 20 values and i will store them";
+            const string Msg2 = "What number do you want to find?";
+            const string Msg3 = "It is";
+            const string Msg4 = "It's not";
+            const string Msg5 = "Your numbers: ";
+            const string FormatError = "The format of the number is incorrect";
+            int[] array = new int[20];
+            int key;
+            Console.WriteLine(Msg1);
+            try
+            {
+                for(int i = 0; i < array.Length; i++)
+                {
+                    array[i] = int.Parse(Console.ReadLine());
+                }
+                array = BubbleSort(array);
+                Console.Write(Msg5);
+                WriteArray(array);
+                Console.WriteLine(Msg2);
+                key = int.Parse(Console.ReadLine());
+                Console.WriteLine(BinarySearch(array, 0, array.Length-1, key) ? Msg3 : Msg4);
+
+            }catch (FormatException)
             {
                 Console.WriteLine(FormatError);
             }
         }
-    }//POST: retorna si els números (dd, mm, yyyy) estan dins del rang de data corresponent
+    }
 }
