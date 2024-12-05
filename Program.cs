@@ -27,6 +27,10 @@ namespace ProvaT2
                 {
                     Console.WriteLine(Msg3);
                 }
+                for(int i = 0; i < array.Length; i++)
+                {
+                    Console.WriteLine(array[i]);
+                }
             }catch (FormatException)
             {
                 Console.WriteLine(FormatError);
